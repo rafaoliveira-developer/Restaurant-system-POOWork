@@ -8,12 +8,14 @@ public class Restaurant {
     private ArrayList<Waiter> waiters;
     private ArrayList<BarTab> tabs;
     private Menu menu;
+    private Kitchen kitchen;
 
     public Restaurant() {
         this.tables = new ArrayList<>();
         this.waiters = new ArrayList<>();
         this.tabs = new ArrayList<>();
         this.menu = new Menu();
+        this.kitchen = new Kitchen();
     }
 
     public Menu getMenu(){

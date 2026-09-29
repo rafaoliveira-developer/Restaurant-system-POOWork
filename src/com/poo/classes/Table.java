@@ -18,6 +18,14 @@ public class Table {
         this.status = status;
     }
 
+    public int getNumber(){
+        return number;
+    }
+
+    public void setNumber(int number){
+        this.number = number;
+    }
+
 
 
 

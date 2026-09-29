@@ -70,7 +70,7 @@ public class Main {
                     System.out.println("Qual a quantidade? ");
                     int quantity = scanner.nextInt();
                     Product productSearch = restaurant.getMenu().searchProduct(productChoice);
-                    ResquestedItem resquestedItem = new ResquestedItem(productSearch,quantity);
+                    RequestedItem requestedItem = new RequestedItem(productSearch,quantity);
                     System.out.println("Qual a sua comanda?");
                     restaurant.searchBarTab(scanner.nextInt());
 

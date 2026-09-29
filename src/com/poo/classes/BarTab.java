@@ -9,7 +9,7 @@ public class BarTab {
     private int id;
     private Table table;
     private Waiter waiter;
-    private ArrayList<ResquestedItem> items;
+    private ArrayList<RequestedItem> items;
     private TabStatus status;
 
     public BarTab(Table table, Waiter waiter) {
@@ -20,14 +20,14 @@ public class BarTab {
         this.status = TabStatus.OPEN;
     }
 
-    public void addItem(ResquestedItem item){
+    public void addItem(RequestedItem item){
         items.add(item);
     }
 
     public double calculateTotal(){
         double total = 0;
 
-        for(ResquestedItem item: items){
+        for(RequestedItem item: items){
             total += item.calculateTotal();
         }
         return total;
@@ -49,3 +49,4 @@ public class BarTab {
         return id;
     }
 }
+

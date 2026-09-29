@@ -1,11 +1,11 @@
 package com.poo.classes;
 
-public class ResquestedItem {
+public class RequestedItem {
 
     private Product product;
     private int quantity;
 
-    public  ResquestedItem(Product product, int quantity){
+    public RequestedItem(Product product, int quantity){
         this.product = product;
         this.quantity = quantity;
     }
