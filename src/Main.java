@@ -17,7 +17,6 @@ public class Main {
         Drink water= new Drink(01, "Water", "Only Water", 5, DrinkCategory.WATER);
 
 
-
         restaurant.getMenu().addProduct(hamburguer);
         restaurant.getMenu().addProduct(water);
 
