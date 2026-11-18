@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tituloMesas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mesas"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/botaoLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sair"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/perfilFuncionario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tituloMesas"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/subtituloMesas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecione uma mesa para continuar"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/perfilFuncionario"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/botaoAdministracao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Área administrativa"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/subtituloMesas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/mesa01"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:text="Mesa 01&#10;Livre"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintTop_toBottomOf="@id/botaoAdministracao"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mesa02" />
+
+    <Button
+        android:id="@+id/mesa02"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:text="Mesa 02&#10;Livre"
+        android:layout_marginStart="6dp"
+        app:layout_constraintTop_toTopOf="@id/mesa01"
+        app:layout_constraintStart_toEndOf="@id/mesa01"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/mesa03"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:text="Mesa 03&#10;Ocupada"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintTop_toBottomOf="@id/mesa01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mesa04" />
+
+    <Button
+        android:id="@+id/mesa04"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:text="Mesa 04&#10;Livre"
+        android:layout_marginStart="6dp"
+        app:layout_constraintTop_toTopOf="@id/mesa03"
+        app:layout_constraintStart_toEndOf="@id/mesa03"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
