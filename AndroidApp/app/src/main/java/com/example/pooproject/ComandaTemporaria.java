@@ -12,6 +12,7 @@ public class ComandaTemporaria {
         private final String setor;
         private int quantidade;
 
+
         public Item(String nome, double preco, String setor) {
             this.nome = nome;
             this.preco = preco;
@@ -37,6 +38,12 @@ public class ComandaTemporaria {
 
         public void aumentarQuantidade() {
             quantidade++;
+        }
+
+        public void diminuirQuantidade() {
+            if (quantidade > 0) {
+                quantidade--;
+            }
         }
 
         public double calcularSubtotal() {
@@ -94,7 +101,30 @@ public class ComandaTemporaria {
 
         return total;
     }
+    public static boolean removerItem(int numeroMesa, String nome) {
 
+        if (numeroMesa < 1 || numeroMesa > itensPorMesa.length) {
+            return false;
+        }
+
+        List<Item> itens = itensPorMesa[numeroMesa - 1];
+
+        for (Item item : itens) {
+
+            if (item.getNome().equals(nome)) {
+
+                if (item.getQuantidade() > 1) {
+                    item.diminuirQuantidade();
+                } else {
+                    itens.remove(item);
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
     public static void limparComanda(int numeroMesa) {
         itensPorMesa[numeroMesa - 1].clear();
     }

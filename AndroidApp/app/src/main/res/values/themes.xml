@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.POOProject" parent="Base.Theme.POOProject" />
+    <style name="Theme.POOProject.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#481522</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_p</item>
+        <item name="windowSplashScreenAnimationDuration">200</item>
+        <item name="postSplashScreenTheme">@style/Theme.POOProject</item>
+    </style>
 </resources>
