@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import android.app.AlertDialog;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -28,6 +30,8 @@ public class ComandaFragment extends Fragment {
     private Button botaoCardapio;
 
     private Button botaoPagamento;
+
+    private boolean ehGerente;
 
     @Nullable
     @Override
@@ -49,6 +53,8 @@ public class ComandaFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
+
+        ehGerente = SessaoUsuario.ehGerente();
 
         numeroMesa = requireArguments()
                 .getInt("numeroMesa", -1);
@@ -108,6 +114,53 @@ public class ComandaFragment extends Fragment {
         });
 
         atualizarTela();
+
+        Button botaoCancelarComanda = view.findViewById(R.id.botaoCancelarComanda);
+        botaoCancelarComanda.setVisibility(
+                ehGerente ? View.VISIBLE : View.GONE
+        );
+        botaoCancelarComanda.setOnClickListener(v ->
+                confirmarCancelamento()
+        );
+    }
+
+    private void confirmarCancelamento() {
+
+        if (!ehGerente) {
+            return;
+        }
+
+        if (!EstadoMesas.estaOcupada(numeroMesa)) {
+            Toast.makeText(
+                    requireContext(),
+                    "Não existe uma comanda aberta nesta mesa.",
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Cancelar comanda")
+                .setMessage(
+                        "Deseja realmente cancelar a comanda desta mesa? " +
+                                "Todos os itens registrados serão removidos."
+                )
+                .setNegativeButton("Voltar", null)
+                .setPositiveButton("Cancelar comanda", (dialog, which) -> {
+
+                    ComandaTemporaria.limparComanda(numeroMesa);
+
+                    EstadoMesas.fecharComanda(numeroMesa);
+
+                    atualizarTela();
+
+                    Toast.makeText(
+                            requireContext(),
+                            "Comanda cancelada.",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                })
+                .show();
     }
 
     @Override
@@ -135,6 +188,7 @@ public class ComandaFragment extends Fragment {
         atualizarItens();
     }
 
+
     private void atualizarItens() {
 
         listaItens.removeAllViews();
@@ -149,7 +203,9 @@ public class ComandaFragment extends Fragment {
             mensagem.setPadding(8, 8, 8, 8);
 
             listaItens.addView(mensagem);
+
         } else {
+
             NumberFormat moeda =
                     NumberFormat.getCurrencyInstance(
                             new Locale("pt", "BR")
@@ -157,7 +213,13 @@ public class ComandaFragment extends Fragment {
 
             for (ComandaTemporaria.Item item : itens) {
 
-                TextView linha = new TextView(requireContext());
+                LinearLayout linha = new LinearLayout(requireContext());
+
+                linha.setOrientation(LinearLayout.HORIZONTAL);
+                linha.setGravity(android.view.Gravity.CENTER_VERTICAL);
+                linha.setPadding(8, 12, 8, 12);
+
+                TextView informacoes = new TextView(requireContext());
 
                 String texto =
                         item.getNome()
@@ -167,9 +229,35 @@ public class ComandaFragment extends Fragment {
                                 + " | Subtotal: "
                                 + moeda.format(item.calcularSubtotal());
 
-                linha.setText(texto);
-                linha.setTextSize(15);
-                linha.setPadding(8, 12, 8, 12);
+                informacoes.setText(texto);
+                informacoes.setTextSize(15);
+
+                LinearLayout.LayoutParams parametrosTexto =
+                        new LinearLayout.LayoutParams(
+                                0,
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                1
+                        );
+
+                linha.addView(informacoes, parametrosTexto);
+
+                if (ehGerente) {
+
+                    Button botaoRemover = new Button(requireContext());
+                    botaoRemover.setText("Remover");
+
+                    botaoRemover.setOnClickListener(v -> {
+
+                        ComandaTemporaria.removerItem(
+                                numeroMesa,
+                                item.getNome()
+                        );
+
+                        atualizarTela();
+                    });
+
+                    linha.addView(botaoRemover);
+                }
 
                 listaItens.addView(linha);
             }
@@ -187,4 +275,5 @@ public class ComandaFragment extends Fragment {
                 )
         );
     }
+
 }

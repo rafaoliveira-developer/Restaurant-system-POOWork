@@ -23,6 +23,20 @@
         <action
             android:id="@+id/action_mesas_to_comanda"
             app:destination="@id/comandaFragment" />
+        <action
+            android:id="@+id/action_mesas_to_administracao"
+            app:destination="@id/administracaoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/administracaoFragment"
+        android:name="com.example.pooproject.AdministracaoFragment"
+        android:label="Administração">
+
+        <action
+            android:id="@+id/action_administracao_to_mesas"
+            app:destination="@id/mesasFragment" />
+
     </fragment>
 
     <fragment

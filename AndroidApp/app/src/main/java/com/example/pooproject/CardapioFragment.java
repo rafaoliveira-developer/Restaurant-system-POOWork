@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,20 +30,6 @@ public class CardapioFragment extends Fragment {
     private TextView textoSelecao;
     private TextView mensagemListaVazia;
     private LinearLayout listaProdutos;
-
-    private final List<ProdutoMenu> produtos = new ArrayList<>();
-
-    private static class ProdutoMenu {
-        String nome;
-        double preco;
-        String setor;
-
-        ProdutoMenu(String nome, double preco, String setor) {
-            this.nome = nome;
-            this.preco = preco;
-            this.setor = setor;
-        }
-    }
 
     @Nullable
     @Override
@@ -84,8 +69,6 @@ public class CardapioFragment extends Fragment {
         Button botaoVoltar =
                 view.findViewById(R.id.botaoVoltarComanda);
 
-        carregarProdutos();
-
         botaoCozinha.setOnClickListener(v -> {
             categoriaAtual = "Cozinha";
             tituloCategoria.setText(categoriaAtual);
@@ -122,20 +105,6 @@ public class CardapioFragment extends Fragment {
         atualizarLista(numeroMesa);
     }
 
-    private void carregarProdutos() {
-        produtos.clear();
-
-        produtos.add(new ProdutoMenu("Hambúrguer", 30.00, "Cozinha"));
-        produtos.add(new ProdutoMenu(
-                "Macarrão à bolonhesa", 38.00, "Cozinha"));
-        produtos.add(new ProdutoMenu(
-                "Filé à parmegiana", 45.00, "Cozinha"));
-
-        produtos.add(new ProdutoMenu("Água", 5.00, "Bar"));
-        produtos.add(new ProdutoMenu("Refrigerante", 7.00, "Bar"));
-        produtos.add(new ProdutoMenu("Suco", 9.00, "Bar"));
-    }
-
     private void atualizarLista(int numeroMesa) {
         listaProdutos.removeAllViews();
 
@@ -145,13 +114,15 @@ public class CardapioFragment extends Fragment {
 
         int encontrados = 0;
 
+        List<ProdutoMenu> produtos = Cardapio.getProdutos();
+
         for (ProdutoMenu produto : produtos) {
 
-            if (!produto.setor.equals(categoriaAtual)) {
+            if (!produto.getSetor().equals(categoriaAtual)) {
                 continue;
             }
 
-            if (!normalizarTexto(produto.nome).contains(pesquisa)) {
+            if (!normalizarTexto(produto.getNome()).contains(pesquisa)) {
                 continue;
             }
 
@@ -164,19 +135,20 @@ public class CardapioFragment extends Fragment {
                             new Locale("pt", "BR"));
 
             botaoProduto.setText(
-                    produto.nome + " — " + moeda.format(produto.preco));
+                    produto.getNome() + " — " +
+                            moeda.format(produto.getPreco()));
 
             botaoProduto.setOnClickListener(v -> {
                 boolean adicionado = ComandaTemporaria.adicionarItem(
                         numeroMesa,
-                        produto.nome,
-                        produto.preco,
-                        produto.setor
+                        produto.getNome(),
+                        produto.getPreco(),
+                        produto.getSetor()
                 );
 
                 if (adicionado) {
                     textoSelecao.setText(
-                            produto.nome + " adicionado à comanda");
+                            produto.getNome() + " adicionado à comanda");
                 } else {
                     textoSelecao.setText(
                             "Abra uma comanda antes de adicionar produtos.");
@@ -194,8 +166,7 @@ public class CardapioFragment extends Fragment {
         return java.text.Normalizer
                 .normalize(texto, java.text.Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "")
-                .toLowerCase(java.util.Locale.ROOT)
+                .toLowerCase(Locale.ROOT)
                 .trim();
     }
-
 }
