@@ -1,73 +1,95 @@
-# Restaurant Management System
+# Sistema de Gerenciamento de Restaurante
 
-A restaurant management system developed for the **Object-Oriented Programming (OOP)** course at the **Federal University of Goiás (UFG)**.
+Sistema de gerenciamento de restaurante desenvolvido para a disciplina de **Programação Orientada a Objetos (POO)** da **Universidade Federal de Goiás (UFG)**.
 
-The project aims to develop an application for managing basic restaurant operations while applying fundamental Object-Oriented Programming concepts in Java.
+O projeto tem como objetivo desenvolver uma aplicação para gerenciar operações básicas de um restaurante, aplicando conceitos fundamentais de orientação a objetos em Java.
 
-## Technologies
+## Tecnologias
 
-* Java
-* Object-Oriented Programming
-* Git
-* GitHub
+- Java 15 ou superior
+- Programação Orientada a Objetos
+- Git
+- GitHub
 
-## Features
+## Funcionalidades e componentes
 
-The project is currently under development and includes classes representing:
+O projeto está em desenvolvimento e contém classes que representam:
 
-* Restaurant
-* Tables
-* Waiters
-* Products
-* Food
-* Drinks
-* Menu
-* Tabs
-* Requested items
-* Kitchen
+- Restaurante
+- Mesas
+- Garçons
+- Produtos
+- Alimentos
+- Bebidas
+- Cardápio
+- Comandas
+- Itens solicitados
+- Cozinha
+- Pedidos da cozinha
+- Pagamentos
 
-The system also includes status management for tables and tabs.
+O sistema também possui enumerações para controlar as categorias dos produtos e os estados das mesas, comandas e pedidos da cozinha.
 
-## Project Structure
+## Estrutura do projeto
 
 ```text
 src/
+├── Principal.java
 └── com/
     └── poo/
-        └── classes/
-            ├── BarTab.java
-            ├── Drink.java
-            ├── DrinkCategory.java
-            ├── Food.java
-            ├── FoodCategory.java
-            ├── Kitchen.java
-            ├── Menu.java
-            ├── Product.java
-            ├── ResquestedItem.java
-            ├── Restaurant.java
-            ├── TabStatus.java
-            ├── Table.java
-            ├── TableStatus.java
-            └── Waiter.java
+        └── modelos/
+            ├── Comanda.java
+            ├── Bebida.java
+            ├── CategoriaBebida.java
+            ├── Alimento.java
+            ├── CategoriaAlimento.java
+            ├── Cozinha.java
+            ├── PedidoCozinha.java
+            ├── StatusPedidoCozinha.java
+            ├── Cardapio.java
+            ├── Pagamento.java
+            ├── Produto.java
+            ├── ItemSolicitado.java
+            ├── Restaurante.java
+            ├── StatusComanda.java
+            ├── Mesa.java
+            ├── StatusMesa.java
+            └── Garcom.java
 ```
 
-## Objective
+## Como executar
 
-The main objective of this project is to apply Object-Oriented Programming concepts in a practical application, including:
+É necessário ter o JDK 15 ou superior instalado.
 
-* Classes and objects
-* Encapsulation
-* Inheritance
-* Polymorphism
-* Enumerations
-* Collections
-* Packages
-* Relationships between classes
+Na raiz do projeto, compile os arquivos:
 
-## Authors
+```bash
+javac -encoding UTF-8 -d out src/Principal.java src/com/poo/modelos/*.java
+```
 
-Developed by students of the **Federal University of Goiás (UFG)** as part of the Object-Oriented Programming course.
+Em seguida, execute a aplicação:
 
-## Status
+```bash
+java -cp out Principal
+```
 
-🚧 **In development**
+## Objetivo acadêmico
+
+O principal objetivo do projeto é aplicar conceitos de Programação Orientada a Objetos em uma aplicação prática, incluindo:
+
+- Classes e objetos
+- Encapsulamento
+- Herança
+- Polimorfismo
+- Enumerações
+- Coleções
+- Pacotes
+- Relacionamentos entre classes
+
+## Autoria
+
+Desenvolvido por estudantes da **Universidade Federal de Goiás (UFG)** como parte da disciplina de Programação Orientada a Objetos.
+
+## Situação do projeto
+
+Em desenvolvimento.
