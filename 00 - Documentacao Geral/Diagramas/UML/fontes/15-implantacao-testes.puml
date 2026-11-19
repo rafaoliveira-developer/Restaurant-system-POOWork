@@ -1,0 +1,47 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Ambiente e cobertura dos testes automatizados
+
+left to right direction
+skinparam componentStyle rectangle
+
+node "Windows · ambiente isolado" {
+  artifact "Run-Integration.ps1" as Runner
+  component "RestauranteIT" as IT
+  component "FxSmoke" as FXTest
+  artifact "Run-Android.ps1" as AndroidRunner
+  node "Serviços dos testes" {
+    component "Backend de integração\nHTTP 58080" as Backend
+    queue "Mosquitto de integração\nMQTT 51883" as MQTT
+    database "PostgreSQL de teste\nporta 55432" as DB
+  }
+  artifact "Logs, comprovantes e capturas" as Evidence
+}
+node "Android de QA" {
+  artifact "APK debug" as Apk
+  component "FluxoAtlasTest" as Flow
+  component "ExampleInstrumentedTest" as Instrumented
+  Flow --> Apk : Espresso
+  Instrumented --> Apk : contexto do app
+}
+package "Testes JVM do Android" {
+  component "ComandaTemporariaTest" as DraftTest
+  component "ExampleUnitTest" as ExampleTest
+}
+Runner --> IT : cenários operacionais
+Runner ..> FXTest : opção -JavaFX
+Runner ..> AndroidRunner : opção -AndroidSerial
+Runner ..> Backend : inicia
+Runner ..> MQTT : inicia com ACL de teste
+Runner ..> DB : cria banco por execução
+IT --> Backend : REST
+IT --> MQTT : comandos e resultados
+FXTest --> Backend : Desktop e terminais reais
+FXTest --> MQTT : produção pelo JavaFX
+Backend --> DB : JDBC
+Backend <--> MQTT : comandos e eventos
+AndroidRunner ..> Flow : instrumentação ADB
+Flow --> Backend : API encaminhada por ADB
+Flow --> MQTT : MQTT encaminhado por ADB
+Runner ..> Evidence : .local/integration-<id>
+@enduml

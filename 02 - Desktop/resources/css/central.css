@@ -1,0 +1,40 @@
+.sidebar { -fx-background-color: #fff; -fx-border-color: transparent #e1e8f1 transparent transparent; }
+.button.nav { -fx-alignment: center-left; -fx-graphic-text-gap: 10; -fx-padding: 10 12; -fx-background-color: transparent; -fx-text-fill: #536579; -fx-min-height: 42; }
+.button.nav:hover, .button.nav.active { -fx-background-color: #e8eeff; -fx-text-fill: #174aff; }
+.button.icon-button { -fx-background-color: transparent; -fx-padding: 5; }
+.button.icon-button:hover { -fx-background-color: #e8eeff; }
+.person { -fx-font-weight: bold; }
+.badge { -fx-background-color: #efe8ff; -fx-background-radius: 25; -fx-text-fill: #5d35e8; -fx-padding: 9 10; -fx-font-weight: bold; }
+.metric { -fx-font-size: 28px; -fx-font-weight: bold; }
+.metric.fresh { -fx-text-fill: #a32036; }
+.metric.preparing { -fx-text-fill: #86510c; }
+.metric.ready { -fx-text-fill: #174aff; }
+.card-icon { -fx-background-radius: 9; }
+.card-icon.blue { -fx-background-color: #e8eeff; }
+.card-icon.violet { -fx-background-color: #efe8ff; }
+.card-icon.amber { -fx-background-color: #fff0d8; }
+.card-icon.green { -fx-background-color: #e5f6ec; }
+.card .separator .line, .sidebar .separator .line { -fx-border-color: #e1e8f1; }
+.map-button { -fx-min-width: 135; -fx-min-height: 75; -fx-background-color: #fff; -fx-border-color: #e1e8f1; -fx-border-radius: 12; -fx-background-radius: 12; }
+.map-button.ocupada { -fx-text-fill: #174aff; -fx-background-color: #e8eeff; }
+.map-button.conta_solicitada { -fx-text-fill: #86510c; -fx-background-color: #fff0d8; }
+.map-button.indisponivel { -fx-text-fill: #536579; -fx-background-color: #edf1f6; }
+
+.brand-rail { -fx-background-color: #0e192e; }
+.brand-kicker { -fx-text-fill: #aebcd3; }
+.brand-title { -fx-text-fill: white; -fx-font-size: 38px; -fx-font-weight: bold; }
+.access-background { -fx-background-color: #f2f5fa; }
+.stripe-a { -fx-background-color: linear-gradient(to bottom,#0347ff,#697df4 38%,#7a7df5 59%,#2940ef 83%,#004dff); }
+.stripe-b { -fx-background-color: linear-gradient(to bottom,#b3b4f4,#71c5ff 20%,#0f9bfb 40%,#b7a8f9 58%,#d75ed7 71%,#7223ed 83%,#0050ff); }
+.stripe-c { -fx-background-color: linear-gradient(to bottom,#f5c8fc,#cad1fd 24%,#629df9 43%,#ddadf6 59%,#fa8bc6 75%,#f050de 90%,#bc17f9); }
+.stripe-d { -fx-background-color: linear-gradient(to bottom,#5a1ff6,#7027e5 27%,#b951f0 54%,#ff4fca 78%,#ff39e2); }
+.stripe-e { -fx-background-color: linear-gradient(to bottom,#0046ff,#4269fe 43%,#5e5ff9 67%,#253bf6 80%,#0054ff); }
+
+.toggle-button { -fx-background-color: white; -fx-text-fill: #20334b; -fx-border-color: #e1e8f1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-cursor: hand; -fx-padding: 8 14; }
+.toggle-button:selected { -fx-background-color: #e8eeff; -fx-text-fill: #174aff; }
+.titled-pane > .title { -fx-background-color: #f5f7fa; -fx-border-color: #e1e8f1; -fx-border-radius: 8 8 0 0; -fx-background-radius: 8 8 0 0; }
+.titled-pane > .content { -fx-background-color: #ffffff; -fx-border-color: #e1e8f1; -fx-border-radius: 0 0 8 8; }
+
+.account-card { -fx-padding: 16; -fx-background-color: #f5f7fa; -fx-border-color: #e1e8f1; -fx-background-radius: 12; -fx-border-radius: 12; }
+.account-title { -fx-font-size: 20px; -fx-font-weight: bold; }
+.table-row-cell:empty, .table-row-cell:empty .table-cell { -fx-background-color: white; -fx-border-color: transparent; }

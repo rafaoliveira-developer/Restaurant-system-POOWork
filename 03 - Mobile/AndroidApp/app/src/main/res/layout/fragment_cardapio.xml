@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+ android:padding="18dp" android:background="#F5F7FA">
+ <TextView android:id="@+id/tituloCardapio" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingBottom="8dp" android:text="Cardápio" android:textSize="24sp" android:textColor="#15253A"/><EditText android:id="@+id/campoPesquisa" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="50dp" android:hint="Buscar produto" android:inputType="text" android:singleLine="true" />
+<HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp" android:scrollbars="none"><LinearLayout android:id="@+id/categoriasCardapio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"/></HorizontalScrollView>
+<ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"><LinearLayout android:id="@+id/listaProdutos" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/></ScrollView>
+<TextView android:id="@+id/textoSelecao" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingBottom="8dp" android:text="Carregando cardápio…" android:textSize="14sp" android:textColor="#15253A"/><Button android:id="@+id/botaoRevisar" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="Revisar pedido" android:textAllCaps="false"/><Button android:id="@+id/botaoVoltarComanda" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:text="Voltar à comanda" android:textAllCaps="false"/>
+</LinearLayout>

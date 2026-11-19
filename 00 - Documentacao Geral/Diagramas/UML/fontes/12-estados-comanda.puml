@@ -1,0 +1,28 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Estados da comanda e ocupação da mesa
+
+left to right direction
+
+state "ABERTA" as Aberta
+state "CONTA_SOLICITADA" as Solicitada
+state "FECHADA" as Fechada
+state "CANCELADA" as Cancelada
+
+[*] --> Aberta : abertura explícita ou primeiro pedido
+Aberta --> Solicitada : solicitar conta
+Aberta --> Cancelada : gerência [sem pedidos]
+Solicitada --> Cancelada : gerência [sem pedidos]
+Solicitada --> Fechada : pagamento [pedidos consolidados]
+Fechada --> [*]
+Cancelada --> [*]
+
+note bottom of Aberta
+  Uma mesa pode ter no máximo
+  uma comanda ativa.
+end note
+note bottom of Fechada
+  A mesa deixa de estar ocupada ao fechar ou cancelar.
+  A disponibilidade da mesa é registrada separadamente.
+end note
+@enduml

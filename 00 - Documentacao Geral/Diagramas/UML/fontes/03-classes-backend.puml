@@ -1,0 +1,133 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Classes do Backend Java SE
+
+hide empty members
+hide circle
+
+package "Inicialização e transporte" {
+  class Backend {
+    {static} +main(args: String[])
+  }
+  class Api {
+    +handle(exchange: HttpExchange)
+  }
+  class Broker {
+    +start()
+    +connected(): boolean
+    +close()
+    -receive(topic: String, bytes: byte[])
+    -tick()
+  }
+  class Topics {
+    {static} +enqueue(c, topic, payload)
+    {static} +changed(c, resource)
+  }
+}
+
+package "Regras da operação" {
+  class Orders {
+    +accept(c, actor, body)
+    +process(c, actor, station, body)
+    +list(c, actor)
+    +view(c, actor, id)
+    +queue(c, actor, station)
+    +deliver(c, actor, id)
+  }
+  class "Orders.Item" as OrderItem <<record>> {
+    productId: long
+    quantity: int
+    notes: String
+  }
+  class Consolidation <<record>> {
+    status: String
+    code: String
+    {static} +from(stations): Consolidation
+  }
+  class Tabs {
+    +open(c, actor, tableId)
+    +action(c, actor, tableId, action, method, expectedTotal, assigned)
+    +view(c, actor, tableId)
+    +closingQueue(c, actor)
+    +payments(c, actor)
+    +cash(c, actor, close)
+  }
+  class Catalog {
+    +products(c, actor)
+    +tables(c, actor)
+    +employees(c, actor)
+    +settings(c, actor, body)
+  }
+  class Reports {
+    +dashboard(c, actor)
+    +sales(c, actor, start, end)
+    +history(c, actor)
+  }
+  class PrintJobs {
+    +pending(c, actor)
+    +action(c, actor, id, action, body)
+  }
+}
+
+package "Sessão, persistência e JSON" {
+  class Auth {
+    +login(username, password)
+    +authenticate(c, token): Actor
+    +logout(token)
+    +bootstrap(username, password)
+  }
+  class Actor <<record>> {
+    id: long
+    username: String
+    name: String
+    role: String
+    +require(roles)
+  }
+  class Database {
+    +tx(work)
+    +migrate(directory)
+    {static} +query(c, sql, parameters)
+    {static} +update(c, sql, parameters)
+  }
+  interface "Database.Work<T>" as DbWork {
+    +run(connection): T
+  }
+  class Problem {
+    +status(): int
+  }
+  class Json {
+    {static} +parse(value): JsonObject
+    {static} +encode(value): String
+  }
+}
+
+Backend ..> Api : registra
+Backend ..> Broker : inicia
+Backend ..> Database : migra
+Api --> Auth
+Api --> Database
+Api --> Orders
+Api --> Tabs
+Api --> Catalog
+Api --> Reports
+Api --> PrintJobs
+Api ..> Problem : converte para HTTP
+Broker --> Auth
+Broker --> Database
+Broker --> Orders
+Broker ..> Topics : tópicos de comando
+Broker ..> Json : valida payload
+Auth --> Database
+Auth ..> Actor : autentica
+Actor ..> Problem : recusa permissão
+Database ..> DbWork : executa
+Orders --> Tabs
+Orders ..> OrderItem : interpreta itens
+Orders ..> Consolidation : consolida
+Orders ..> Topics : enfileira
+Tabs ..> Catalog : bloqueio e auditoria
+Tabs ..> Topics : enfileira
+Catalog ..> Topics : enfileira
+PrintJobs ..> Topics : enfileira
+Topics ..> Database : grava na outbox
+@enduml

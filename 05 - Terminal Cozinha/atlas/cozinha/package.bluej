@@ -1,0 +1,19 @@
+#BlueJ package file
+package.numDependencies=0
+package.numTargets=2
+package.showExtends=true
+package.showUses=true
+project.charset=UTF-8
+project.invoke.thread=FX
+target1.name=Cozinha
+target1.type=ClassTarget
+target1.width=160
+target1.height=58
+target1.x=85
+target1.y=70
+target2.name=KitchenPrinting
+target2.type=ClassTarget
+target2.width=160
+target2.height=58
+target2.x=265
+target2.y=70

@@ -1,0 +1,54 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Sequência de envio e produção de um pedido
+
+hide footbox
+autonumber
+actor "Garçom" as Garcom
+participant "Android\nSessaoUsuario" as App
+queue "Mosquitto" as MQTT
+participant "Backend\nBroker · Auth · Orders" as BE
+database "PostgreSQL" as DB
+participant "Terminal\nBar ou Cozinha" as Terminal
+
+Garcom -> App : Revisar e enviar itens da mesa
+App -> App : Gerar UUID e chave de idempotência\nGuardar comando pendente localmente
+App -> MQTT : NOVOPEDIDO · QoS 1
+MQTT -> BE : Entregar comando e identidade do tópico
+BE -> DB : Abrir transação e validar a sessão REST
+alt Comando autenticado e pedido novo válido
+  BE -> DB : Bloquear mesa/comanda e validar produtos
+  BE -> DB : Registrar pedido, itens e despachos\nCriar impressão se houver Cozinha
+  BE -> DB : Gravar eventos na outbox e confirmar transação
+  BE -> MQTT : Publicar ENVIABAR ou ENVIACOZINHA\nPublicar CONFIRMAREPEDIDO PENDENTE
+  MQTT -> Terminal : Notificar as estações envolvidas
+  MQTT -> App : Entregar recibo de pedido persistido
+  loop Cada atualização de uma estação envolvida
+    Terminal -> BE : REST GET /queue/{station}
+    BE --> Terminal : Itens e status da estação
+    Terminal -> MQTT : CONFIRMABAR ou CONFIRMACOZINHA\nPREPARANDO, OK ou ERRO
+    MQTT -> BE : Entregar atualização
+    BE -> DB : Atualizar despacho e consolidar\nquando todos terminarem
+  end
+  BE -> MQTT : Publicar CONFIRMAREPEDIDO final
+  MQTT -> App : Notificar resultado
+else Pedido correlacionado já processado ou rejeitado
+  BE -> DB : Reutilizar o resultado registrado ou persistir rejeição
+  BE -> MQTT : Publicar resultado correlacionado pela outbox
+  MQTT -> App : CONFIRMAREPEDIDO
+else Comando sem sessão válida ou identidade incompatível
+  BE -> BE : Recusar o processamento
+end
+
+opt Consulta do estado pelo Android
+  App -> BE : REST GET /orders/{uuid}
+  BE -> DB : Consultar pedido ou rejeição visível ao ator
+  BE --> App : Estado autorizado ou erro HTTP
+  App --> Garcom : Exibir situação do pedido
+end
+
+note over BE, DB
+  A publicação MQTT ocorre depois de gravar a outbox.
+  O publicador marca published_at após a confirmação MQTT.
+end note
+@enduml

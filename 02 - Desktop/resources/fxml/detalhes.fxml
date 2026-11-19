@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<DialogPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="535">
+  <content><VBox spacing="11">
+    <padding><Insets top="12" left="2" right="2" bottom="4"/></padding>
+    <Label fx:id="summary" wrapText="true" styleClass="section-title"/>
+    <TextArea fx:id="body" editable="false" wrapText="true" prefRowCount="15"/>
+  </VBox></content>
+</DialogPane>

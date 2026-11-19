@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="15">
+  <padding><Insets top="25" left="28" right="28" bottom="24"/></padding>
+  <HBox alignment="CENTER_LEFT" spacing="12">
+    <Label text="Salão" styleClass="page-title"/><Region HBox.hgrow="ALWAYS"/><ToggleButton fx:id="alternate" text="Mapa"/><Button fx:id="primary" text="Nova mesa" styleClass="primary"/>
+  </HBox>
+  <Label text="Acompanhe a ocupação e selecione uma mesa" styleClass="muted" wrapText="true"/>
+  <FlowPane hgap="9" vgap="8">
+    <ComboBox fx:id="filter" prefWidth="158"/><TextField fx:id="search" promptText="Buscar mesa" prefWidth="208"/><Button fx:id="reload" text="Atualizar"/>
+  </FlowPane>
+  <StackPane VBox.vgrow="ALWAYS"><TableView fx:id="table" VBox.vgrow="ALWAYS" minHeight="250"/><ScrollPane fx:id="map" fitToWidth="true" managed="false" visible="false"><content><VBox fx:id="areas" spacing="12" styleClass="workspace-panel"/></content></ScrollPane></StackPane>
+  <HBox alignment="CENTER_LEFT" spacing="10"><Label fx:id="status" wrapText="true" styleClass="muted"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="details" text="Abrir detalhes"/></HBox>
+</VBox>

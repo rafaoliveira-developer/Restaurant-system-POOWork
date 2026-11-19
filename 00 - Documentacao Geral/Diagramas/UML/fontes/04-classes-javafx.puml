@@ -1,0 +1,101 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Classes do Desktop e dos terminais JavaFX
+
+allowmixing
+hide empty members
+hide circle
+left to right direction
+
+class Application <<JavaFX>>
+package "Desktop · atlas.desktop" {
+  class Desktop {
+    +start(stage)
+  }
+  class Central
+  class Workspace {
+    ~refresh()
+    -detail(row)
+    -mutate(route, fields, update)
+  }
+  class Panorama {
+    ~refresh()
+  }
+  class "Panorama.Card" as Card <<record>> {
+    node: Parent
+    metrics: String[]
+    labels: String[]
+    note: String
+  }
+  class Forms {
+    {static} ~edit(page, row)
+    {static} ~detail(title, description, primary, secondary)
+  }
+}
+package "Terminais" {
+  class Bar {
+    +start(stage)
+  }
+  class Cozinha {
+    +start(stage)
+  }
+  class KitchenPrinting {
+    -refresh()
+    -record(client, id)
+  }
+}
+package "Clientes JavaFX · atlas.cliente" {
+  class SessionView {
+    +start()
+    +listen(callback)
+    +publish(event, fields)
+    +logout()
+    {static} +load(owner, path)
+  }
+  class Client {
+    {static} +login(server, username, password): Client
+    +get(route)
+    +post(route, body)
+    +put(route, body)
+  }
+  class "Client.ApiError" as ApiError {
+    status: int
+  }
+  class Events {
+    +connect()
+    +publish(event, body)
+    +close()
+  }
+  class TerminalView {
+    +refresh()
+    +selected(): JsonObject
+    -command(state, error)
+  }
+}
+artifact "FXML e CSS\nDesktop, Bar, Cozinha e sessão" as Layouts
+
+Application <|-- Desktop
+Application <|-- Bar
+Application <|-- Cozinha
+Desktop ..> SessionView : inicia sessão
+Desktop ..> Central : abre após login
+Central --> Client
+Central *-- "0..*" Workspace
+Central *-- "0..1" Panorama
+Workspace --> Client
+Workspace ..> Forms
+Panorama --> Client
+Panorama *-- "0..*" Card
+Bar ..> TerminalView : cria
+Bar ..> SessionView : inicia sessão
+Cozinha ..> SessionView : inicia sessão
+Cozinha ..> KitchenPrinting : cria
+KitchenPrinting --> SessionView
+KitchenPrinting *-- TerminalView
+TerminalView --> SessionView
+SessionView --> "0..1" Client : sessão REST
+SessionView --> "0..1" Events : conexão MQTT
+Events --> Client : identidade da sessão
+Client ..> ApiError : resposta HTTP não OK
+SessionView ..> Layouts : carrega recursos
+@enduml

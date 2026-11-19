@@ -1,0 +1,23 @@
+user atlas-backend
+topic read atlas/v1/commands/+/+
+topic write atlas/v1/stations/+/+
+topic write atlas/v1/users/+/CONFIRMAREPEDIDO
+topic write atlas/v1/updates
+
+user garcom-exemplo
+topic write atlas/v1/commands/garcom-exemplo/NOVOPEDIDO
+topic read atlas/v1/users/garcom-exemplo/CONFIRMAREPEDIDO
+topic read atlas/v1/updates
+
+user bar-exemplo
+topic write atlas/v1/commands/bar-exemplo/CONFIRMABAR
+topic read atlas/v1/stations/BAR/ENVIABAR
+topic read atlas/v1/updates
+
+user cozinha-exemplo
+topic write atlas/v1/commands/cozinha-exemplo/CONFIRMACOZINHA
+topic read atlas/v1/stations/COZINHA/ENVIACOZINHA
+topic read atlas/v1/updates
+
+user gerencia-exemplo
+topic read atlas/v1/updates

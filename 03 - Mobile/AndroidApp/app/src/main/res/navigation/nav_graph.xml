@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+ android:id="@+id/nav_graph" app:startDestination="@id/loginFragment">
+ <fragment android:id="@+id/loginFragment" android:name="com.example.pooproject.LoginFragment" android:label="Login">
+   <action android:id="@+id/action_login_to_mesas" app:destination="@id/mesasFragment"/>
+ </fragment>
+ <fragment android:id="@+id/mesasFragment" android:name="com.example.pooproject.MesaFragment" android:label="Mesas">
+   <action android:id="@+id/action_mesas_to_comanda" app:destination="@id/comandaFragment"/>
+ </fragment>
+ <fragment android:id="@+id/comandaFragment" android:name="com.example.pooproject.ComandaFragment" android:label="Comanda">
+   <action android:id="@+id/action_comanda_to_cardapio" app:destination="@id/cardapioFragment"/>
+ </fragment>
+ <fragment android:id="@+id/cardapioFragment" android:name="com.example.pooproject.CardapioFragment" android:label="Cardápio"/>
+ <fragment android:id="@+id/historicoFragment" android:name="com.example.pooproject.HistoricoFragment" android:label="Meus pedidos"/>
+</navigation>

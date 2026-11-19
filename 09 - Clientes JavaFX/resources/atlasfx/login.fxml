@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" styleClass="login-bg">
+  <children>
+    <VBox spacing="12" maxWidth="470" maxHeight="-Infinity" styleClass="card">
+      <padding><Insets top="28" right="32" bottom="30" left="32"/></padding>
+      <Label fx:id="app" text="ATLAS Central" styleClass="page-title"/>
+      <Label text="Acesso ao sistema" styleClass="section-title"/>
+      <Label text="Código do funcionário"/>
+      <TextField fx:id="username" promptText="Seu código"/>
+      <Label text="Senha"/>
+      <PasswordField fx:id="password" promptText="Sua senha"/>
+      <TitledPane text="Conexão" expanded="true" animated="false">
+        <content><VBox spacing="8">
+          <Label text="Endereço do Backend"/><TextField fx:id="server" promptText="https://servidor"/>
+          <Label text="Endereço do Broker MQTT"/><TextField fx:id="broker" promptText="ssl://servidor:8883"/>
+          <Label text="Credencial MQTT individual"/><PasswordField fx:id="mqtt" promptText="Senha do broker"/>
+        </VBox></content>
+      </TitledPane>
+      <Button fx:id="submit" text="Entrar" maxWidth="Infinity" defaultButton="true" styleClass="primary"/>
+      <Label fx:id="message" wrapText="true" styleClass="muted"/>
+    </VBox>
+  </children>
+</StackPane>

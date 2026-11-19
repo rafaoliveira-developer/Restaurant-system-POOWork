@@ -1,0 +1,12 @@
+#BlueJ package file
+package.numDependencies=0
+package.numTargets=1
+package.showExtends=true
+package.showUses=true
+project.charset=UTF-8
+target1.name=impressao
+target1.type=PackageTarget
+target1.width=160
+target1.height=58
+target1.x=85
+target1.y=70

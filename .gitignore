@@ -1,0 +1,11 @@
+/.local/
+/build/
+.env
+*.class
+*.ctxt
+**/lib/*.jar
+**/.gradle/
+**/local.properties
+**/.idea/
+**/+libs/*.jar
+**/AndroidApp/app/build/

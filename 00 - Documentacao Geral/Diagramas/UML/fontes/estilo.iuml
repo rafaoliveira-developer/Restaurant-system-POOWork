@@ -1,0 +1,29 @@
+' Aparência compartilhada dos diagramas do ATLAS
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontColor #172B43
+skinparam defaultFontSize 14
+skinparam ArrowColor #466484
+skinparam titleFontColor #102944
+skinparam titleFontSize 23
+skinparam packageBackgroundColor #F6F9FD
+skinparam packageBorderColor #9AB0C8
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #6D89A6
+skinparam classAttributeIconSize 0
+skinparam componentBackgroundColor #EAF3FC
+skinparam componentBorderColor #6280A0
+skinparam nodeBackgroundColor #F3F8FE
+skinparam nodeBorderColor #7E99B5
+skinparam participantBackgroundColor #EAF3FC
+skinparam participantBorderColor #6280A0
+skinparam sequenceGroupBackgroundColor #F1F6FC
+skinparam sequenceGroupBorderColor #7E99B5
+skinparam stateBackgroundColor #EAF3FC
+skinparam stateBorderColor #6280A0
+skinparam usecaseBackgroundColor #EAF3FC
+skinparam usecaseBorderColor #6280A0
+skinparam noteBackgroundColor #FFF8E8
+skinparam noteBorderColor #B59A60
+skinparam roundcorner 10

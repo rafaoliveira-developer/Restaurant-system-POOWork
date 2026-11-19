@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1">
+  <top><HBox spacing="14" alignment="CENTER_LEFT" styleClass="top-bar"><Label text="ATLAS  /  Bar" styleClass="section-title"/><Region HBox.hgrow="ALWAYS"/><Label fx:id="connection" styleClass="muted"/><Label fx:id="account"/><Button fx:id="logout" text="Sair"/></HBox></top>
+  <center><VBox spacing="16">
+    <padding><Insets top="25" right="28" bottom="26" left="28"/></padding>
+    <HBox spacing="15" alignment="CENTER_LEFT"><Label text="Fila de produção" styleClass="page-title"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="reload" text="Atualizar"/></HBox>
+    <Label fx:id="status" styleClass="muted"/>
+    <SplitPane dividerPositions="0.34" VBox.vgrow="ALWAYS">
+      <ListView fx:id="queue" minWidth="260"/>
+      <VBox spacing="12" styleClass="workspace-panel">
+        <Label text="Comanda" styleClass="section-title"/>
+        <TextArea fx:id="details" editable="false" wrapText="true" VBox.vgrow="ALWAYS"/>
+        <HBox spacing="10"><Button fx:id="start" text="Iniciar preparo"/><Button fx:id="finish" text="Marcar pronto" styleClass="primary"/><Button fx:id="fail" text="Informar falha" styleClass="danger"/></HBox>
+        
+      </VBox>
+    </SplitPane>
+  </VBox></center>
+</BorderPane>

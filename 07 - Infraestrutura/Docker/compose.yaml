@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: atlas
+      POSTGRES_USER: atlas
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atlas -d atlas"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "${ATLAS_MQTT_BIND:-127.0.0.1}:${ATLAS_MQTT_PORT:-1883}:1883"
+    volumes:
+      - ../MQTT/${ATLAS_MQTT_CONFIG:-mosquitto.conf}:/mosquitto/config/mosquitto.conf:ro
+      - ../MQTT/acl:/mosquitto/config/acl:ro
+      - ../MQTT/passwords:/mosquitto/config/passwords:ro
+      - ../MQTT/tls:/mosquitto/tls:ro
+      - mqtt:/mosquitto/data
+volumes:
+  postgres:
+  mqtt:

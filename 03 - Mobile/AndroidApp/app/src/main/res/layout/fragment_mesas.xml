@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+ android:padding="18dp" android:background="#F5F7FA">
+ <TextView android:id="@+id/tituloMesas" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingBottom="8dp" android:text="ATLAS" android:textSize="27sp" android:textColor="#15253A"/><TextView android:id="@+id/perfilFuncionario" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingBottom="8dp" android:text="" android:textSize="15sp" android:textColor="#15253A"/>
+<TextView android:id="@+id/subtituloMesas" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingBottom="8dp" android:text="Carregando mesas…" android:textSize="14sp" android:textColor="#15253A"/>
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"><Button android:id="@+id/botaoAtualizar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:text="Atualizar" android:textAllCaps="false"/><Button android:id="@+id/botaoHistorico" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:text="Pedidos" android:textAllCaps="false"/><Button android:id="@+id/botaoLogout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="48dp" android:text="Sair" android:textAllCaps="false"/></LinearLayout>
+<ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"><LinearLayout android:id="@+id/listaMesas" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/></ScrollView>
+</LinearLayout>

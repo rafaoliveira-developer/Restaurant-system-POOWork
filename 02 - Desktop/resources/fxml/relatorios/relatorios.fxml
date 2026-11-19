@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="15">
+  <padding><Insets top="25" left="28" right="28" bottom="24"/></padding>
+  <HBox alignment="CENTER_LEFT" spacing="12">
+    <Label text="Relatórios" styleClass="page-title"/><Region HBox.hgrow="ALWAYS"/>
+  </HBox>
+  <Label text="Vendas registradas por produto, estação e funcionário" styleClass="muted" wrapText="true"/>
+  <FlowPane hgap="9" vgap="8">
+    <ComboBox fx:id="filter" prefWidth="158"/><DatePicker fx:id="from" promptText="Data inicial" prefWidth="147"/><DatePicker fx:id="to" promptText="Data final" prefWidth="147"/><TextField fx:id="search" promptText="Buscar nas vendas" prefWidth="208"/><Button fx:id="reload" text="Atualizar"/>
+  </FlowPane>
+  <TableView fx:id="table" VBox.vgrow="ALWAYS" minHeight="250"/>
+  <HBox alignment="CENTER_LEFT" spacing="10"><Label fx:id="status" wrapText="true" styleClass="muted"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="details" text="Abrir detalhes"/></HBox>
+</VBox>

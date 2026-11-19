@@ -1,0 +1,651 @@
+openapi: 3.1.0
+info:
+  title: ATLAS REST v1
+  version: 1.0.0
+  description: API de consulta e operações transacionais do ATLAS. A criação de pedidos e a produção usam MQTT v1.
+servers:
+  - url: http://127.0.0.1:8080/api/v1
+security:
+  - bearer: []
+paths:
+  /health:
+    get:
+      summary: "Disponibilidade do PostgreSQL e MQTT"
+      security: []
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Health'}
+        default: {$ref: '#/components/responses/Failure'}
+  /login:
+    post:
+      summary: "Autenticar funcionário"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Login'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/LoginResponse'}
+        default: {$ref: '#/components/responses/Failure'}
+  /logout:
+    post:
+      summary: "Revogar a sessão atual"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /me:
+    get:
+      summary: "Consultar funcionário autenticado"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Actor'}
+        default: {$ref: '#/components/responses/Failure'}
+  /restaurant:
+    get:
+      summary: "Consultar nome do restaurante"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tables:
+    get:
+      summary: "Listar mesas"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+    post:
+      summary: "Cadastrar · Mesas"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Table'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tables/{id}:
+    put:
+      summary: "Atualizar · Mesas"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Table'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /products:
+    get:
+      summary: "Listar produtos"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+    post:
+      summary: "Cadastrar · Produtos"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Product'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /products/{id}:
+    put:
+      summary: "Atualizar · Produtos"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Product'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /employees:
+    get:
+      summary: "Listar funcionários"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+    post:
+      summary: "Cadastrar · Funcionários"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Employee'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /employees/{id}:
+    put:
+      summary: "Atualizar · Funcionários"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Employee'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /orders:
+    get:
+      summary: "Listar pedidos autorizados"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /orders/{orderId}:
+    get:
+      summary: "Detalhar pedido ou rejeição"
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /orders/{orderId}/deliver:
+    post:
+      summary: "Registrar entrega ao salão"
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /queue/{station}:
+    get:
+      summary: "Consultar fila da estação"
+      parameters:
+        - name: station
+          in: path
+          required: true
+          schema: {type: string, enum: [BAR, COZINHA]}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tabs/{id}:
+    get:
+      summary: "Consultar comanda ativa e consumo"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tabs/{id}/open:
+    post:
+      summary: "Abrir comanda"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                waiterId: {type: integer, format: int64, minimum: 1, description: Obrigatório para a gerência}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tabs/{id}/request:
+    post:
+      summary: "Solicitar conta de comanda"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tabs/{id}/pay:
+    post:
+      summary: "Pagar comanda"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Payment'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /tabs/{id}/cancel:
+    post:
+      summary: "Cancelar comanda"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /closing-queue:
+    get:
+      summary: "Listar contas solicitadas"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /payments:
+    get:
+      summary: "Listar pagamentos"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /dashboard:
+    get:
+      summary: "Consultar panorama"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /history:
+    get:
+      summary: "Consultar auditoria"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /settings:
+    get:
+      summary: "Consultar configurações"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+    put:
+      summary: "Definir nome do restaurante"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Settings'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /cash-closings:
+    get:
+      summary: "Listar fechamentos de caixa"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+    post:
+      summary: "Fechar pagamentos ainda sem caixa"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints:
+    get:
+      summary: "Listar trabalhos pendentes de impressão"
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/List'}
+        default: {$ref: '#/components/responses/Failure'}
+  /reports:
+    get:
+      summary: "Consultar vendas por período"
+      parameters:
+        - name: from
+          in: query
+          schema: {type: string, format: date}
+        - name: to
+          in: query
+          schema: {type: string, format: date}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints/{printId}/claim:
+    post:
+      summary: "Assumir impressão"
+      parameters:
+        - name: printId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints/{printId}/result:
+    post:
+      summary: "Registrar resultado de impressão"
+      parameters:
+        - name: printId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/PrintResult'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints/{printId}/retry:
+    post:
+      summary: "Tentar novamente impressão"
+      parameters:
+        - name: printId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints/{printId}/cancel:
+    post:
+      summary: "Cancelar impressão"
+      parameters:
+        - name: printId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints/{printId}/uncertain:
+    post:
+      summary: "Marcar incerto impressão"
+      parameters:
+        - name: printId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+  /prints/{printId}/reprint:
+    post:
+      summary: "Solicitar cópia de impressão"
+      parameters:
+        - name: printId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Reprint'}
+      responses:
+        '200':
+          description: Operação executada
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Object'}
+        default: {$ref: '#/components/responses/Failure'}
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+  responses:
+    Failure:
+      description: Consulta ou operação recusada
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Object:
+      type: object
+      additionalProperties: true
+    List:
+      type: array
+      items: {$ref: '#/components/schemas/Object'}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: {type: string}
+    Actor:
+      type: object
+      required: [id, username, name, role]
+      properties:
+        id: {type: integer, format: int64}
+        username: {type: string}
+        name: {type: string}
+        role: {type: string, enum: [GERENTE, GARCOM, CAIXA, BAR, COZINHA]}
+    Health:
+      type: object
+      required: [database, mqtt]
+      properties:
+        database: {const: OK}
+        mqtt: {enum: [OK, OFFLINE]}
+    Login:
+      type: object
+      required: [username, password]
+      properties:
+        username: {type: string}
+        password: {type: string, format: password}
+    LoginResponse:
+      type: object
+      required: [token, employee]
+      properties:
+        token: {type: string}
+        employee: {$ref: '#/components/schemas/Actor'}
+    Table:
+      type: object
+      required: [label, area]
+      properties:
+        label: {type: string, maxLength: 60}
+        area: {type: string, maxLength: 60}
+        available: {type: boolean, default: true}
+    Product:
+      type: object
+      required: [name, category, station, price]
+      properties:
+        name: {type: string, maxLength: 120}
+        description: {type: string, maxLength: 600}
+        category: {type: string, maxLength: 60}
+        station: {type: string, enum: [BAR, COZINHA]}
+        price: {type: number, multipleOf: 0.01, exclusiveMinimum: 0}
+        image: {type: string, maxLength: 1000}
+        available: {type: boolean, default: true}
+    Employee:
+      type: object
+      required: [username, name, role]
+      properties:
+        username: {type: string, pattern: '^[a-z0-9_-]{3,48}$'}
+        name: {type: string, maxLength: 120}
+        role: {type: string, enum: [GERENTE, GARCOM, CAIXA, BAR, COZINHA]}
+        password: {type: string, format: password, description: Obrigatória ao cadastrar}
+        schedule: {type: string, maxLength: 160}
+        active: {type: boolean, default: true}
+    Payment:
+      type: object
+      required: [method]
+      properties:
+        method: {type: string, enum: [PIX, DINHEIRO, CARTAO]}
+        expectedTotal: {type: number, minimum: 0}
+    Settings:
+      type: object
+      required: [restaurant]
+      properties:
+        restaurant: {type: string, maxLength: 120}
+    Reprint:
+      type: object
+      required: [copyId]
+      properties:
+        copyId: {type: string, format: uuid}
+    PrintResult:
+      type: object
+      required: [claimId, status]
+      properties:
+        claimId: {type: string, format: uuid}
+        status: {type: string, enum: [IMPRESSO, FALHA, INCERTO]}
+        error: {type: string, maxLength: 300}

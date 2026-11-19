@@ -1,0 +1,45 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Sequência de fechamento da comanda
+
+hide footbox
+autonumber
+actor "Garçom" as Garcom
+participant "Mobile\nComandaFragment" as Mobile
+actor "Caixa ou gerência" as Operador
+participant "Desktop\nWorkspace" as UI
+participant "Backend\nApi · Auth · Tabs" as BE
+database PostgreSQL as DB
+queue Mosquitto as MQTT
+
+Garcom -> Mobile : Solicitar conta
+Mobile -> BE : POST /tabs/{tableId}/request
+BE -> DB : Autorizar, bloquear registro e marcar CONTA_SOLICITADA
+BE -> DB : Gravar auditoria e atualização na outbox
+BE --> Mobile : Comanda atualizada
+BE -> MQTT : ATUALIZACAO · tabs
+MQTT -> UI : Notificar alteração
+Operador -> UI : Selecionar conta e revisar
+UI -> BE : GET /closing-queue e GET /tabs/{tableId}
+BE -> DB : Consultar itens e total confirmado
+BE --> UI : Comanda e total revisado
+
+Operador -> UI : Confirmar forma de pagamento
+UI -> BE : POST /tabs/{tableId}/pay\nmethod e expectedTotal
+BE -> DB : Validar papel, bloquear mesa e comanda
+alt Há pedido pendente ou total divergente
+  BE --> UI : 409 · revisar ou aguardar produção
+else Conta solicitada e total confirmado
+  BE -> DB : Registrar pagamento e marcar FECHADA
+  BE -> DB : Gravar auditoria e outbox na mesma transação
+  BE --> UI : Comanda fechada
+  BE -> MQTT : ATUALIZACAO · tabs
+  MQTT -> Mobile : Notificar mudança para nova consulta
+end
+
+opt Fechamento de caixa posterior
+  Operador -> UI : Fechar caixa
+  UI -> BE : POST /cash-closings
+  BE -> DB : Consolidar pagamentos sem fechamento
+end
+@enduml

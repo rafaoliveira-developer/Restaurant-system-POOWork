@@ -1,0 +1,49 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Sequência de impressão e reconciliação
+
+hide footbox
+autonumber
+participant "Terminal Cozinha\nKitchenPrinting" as Kitchen
+participant "Backend\nApi · PrintJobs" as BE
+database "PostgreSQL\nprint_jobs" as DB
+participant "Printing" as Service
+participant "Printer\nadaptador selecionado" as Printer
+collections "Diário local de resultados" as Journal
+
+loop Em uma atualização da fila
+  Kitchen -> Journal : Buscar resultados de execuções anteriores
+  opt Resultado aguardando envio
+    Kitchen -> BE : POST /prints/{id}/result
+    BE -> DB : Validar claimId, operador e estado
+    BE --> Kitchen : Resultado confirmado ou conflito de estado
+    Kitchen -> Journal : Remover registro após resposta aceita ou conflito 409
+  end
+
+  Kitchen -> BE : GET /prints
+  BE -> DB : Consultar trabalhos PENDENTE
+  BE --> Kitchen : IDs pendentes
+
+  loop Para cada trabalho pendente
+    Kitchen -> BE : POST /prints/{id}/claim
+    BE -> DB : Assumir o trabalho com bloqueio\nGerar claimId e mudar para IMPRIMINDO
+    alt Outro operador já assumiu
+      BE --> Kitchen : 409 · seguir para outro trabalho
+    else Trabalho atribuído
+      BE --> Kitchen : Conteúdo e claimId
+      Kitchen -> Service : submit(id, content)
+      Service -> Printer : print(id, content)
+      Printer --> Service : Retorno normal ou exceção
+      Service --> Kitchen : IMPRESSO, FALHA ou INCERTO
+      Kitchen -> Journal : Tentar guardar resultado antes do envio
+      Kitchen -> BE : POST /prints/{id}/result
+      BE -> DB : Persistir resultado e gerar atualização na outbox
+    end
+  end
+end
+
+note over Journal
+  Se a rede cair no envio, o resultado guardado
+  pode ser reconciliado sem imprimir novamente.
+end note
+@enduml

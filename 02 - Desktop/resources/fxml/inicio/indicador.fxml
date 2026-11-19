@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="13" prefHeight="225" styleClass="card">
+  <padding><Insets top="15" left="15" right="15" bottom="15"/></padding>
+  <HBox spacing="10" alignment="TOP_LEFT">
+    <StackPane fx:id="icon" prefWidth="34" prefHeight="34" minWidth="34" minHeight="34" styleClass="card-icon"/>
+    <VBox spacing="3" HBox.hgrow="ALWAYS"><Label fx:id="title" styleClass="person"/><Label fx:id="subtitle" styleClass="muted" wrapText="true"/></VBox>
+    <Button fx:id="open" styleClass="icon-button"/>
+  </HBox>
+  <Separator/><HBox fx:id="metrics" spacing="14"/><Region VBox.vgrow="ALWAYS"/><Label fx:id="note" styleClass="muted"/>
+</VBox>

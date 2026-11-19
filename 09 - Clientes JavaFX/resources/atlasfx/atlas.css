@@ -1,0 +1,21 @@
+.root { -fx-font-family: "Segoe UI"; -fx-font-size: 14px; atlas-ink: #15253a; atlas-muted: #536579; atlas-line: #e1e8f1; atlas-blue: #174aff; -fx-background-color: #f5f7fa; }
+.label { -fx-text-fill: atlas-ink; }
+.login-bg { -fx-background-color: linear-gradient(to bottom right,#eef2ff,#f5f7fa 60%,#e9efff); }
+.card, .workspace-panel { -fx-background-color: white; -fx-background-radius: 12; -fx-border-color: atlas-line; -fx-border-radius: 12; }
+.workspace-panel { -fx-padding: 18; }
+.page-title { -fx-font-size: 32px; -fx-font-weight: bold; }
+.section-title { -fx-font-size: 23px; -fx-font-weight: bold; }
+.muted { -fx-text-fill: atlas-muted; -fx-font-size: 12px; }
+.button { -fx-cursor: hand; -fx-background-radius: 8; -fx-background-color: #edf2f8; -fx-text-fill: atlas-ink; -fx-font-weight: bold; -fx-padding: 9 14; }
+.button:hover { -fx-background-color: #e6edfc; }
+.button.primary { -fx-background-color: atlas-blue; -fx-text-fill: white; }
+.button.primary:hover { -fx-background-color: #133dcd; }
+.button.danger { -fx-background-color: #fbe8eb; -fx-text-fill: #a32036; }
+.text-field, .combo-box, .date-picker { -fx-background-color: white; -fx-background-radius: 8; -fx-border-color: atlas-line; -fx-border-radius: 8; }
+.text-field:focused, .combo-box:focused { -fx-border-color: atlas-blue; }
+.table-view, .list-view { -fx-background-color: white; -fx-border-color: atlas-line; -fx-border-radius: 9; -fx-background-radius: 9; }
+.table-view .column-header-background, .table-view .column-header, .table-view .filler { -fx-background-color: #f5f7fa; }
+.table-view .column-header .label { -fx-text-fill: atlas-muted; -fx-font-weight: bold; -fx-alignment: center-left; -fx-padding: 9 8; }
+.table-cell { -fx-padding: 9 8; }
+.scroll-pane, .scroll-pane > .viewport { -fx-background-color: transparent; }
+.top-bar { -fx-background-color: white; -fx-border-color: transparent transparent atlas-line transparent; -fx-padding: 12 20; }

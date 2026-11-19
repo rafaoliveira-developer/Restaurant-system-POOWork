@@ -1,0 +1,36 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Componentes do ATLAS
+
+left to right direction
+skinparam componentStyle rectangle
+
+package "Interfaces" {
+  component "ATLAS Garçom\nAndroid · Java" as Mobile
+  component "ATLAS Desktop\nJavaFX · FXML" as Desktop
+  component "Terminal Bar\nJavaFX · FXML" as Bar
+  component "Terminal Cozinha\nJavaFX · FXML" as Cozinha
+  component "Clientes JavaFX compartilhados\nSessão · REST · MQTT" as FX
+}
+package "Serviços centrais" {
+  component "Backend Java SE\nAPI REST · Regras · Outbox" as Backend
+  queue "Eclipse Mosquitto\nTópicos atlas/v1" as MQTT
+  database "PostgreSQL\nDados e migrations SQL" as DB
+}
+package "Saída local da Cozinha" {
+  component "Módulo de impressão" as Impressao
+  component "Java Print Service\nou arquivo simulado" as Saida
+}
+
+Desktop ..> FX : reutiliza
+Bar ..> FX : reutiliza
+Cozinha ..> FX : reutiliza
+FX --> Backend : REST /api/v1
+FX <--> MQTT : filas, confirmações e atualizações
+Mobile --> Backend : REST /api/v1
+Mobile <--> MQTT : pedidos, resultados e atualizações
+Backend <--> MQTT : consome comandos e publica eventos
+Backend --> DB : JDBC
+Cozinha --> Impressao : executa trabalho atribuído
+Impressao --> Saida : entrega o comprovante
+@enduml

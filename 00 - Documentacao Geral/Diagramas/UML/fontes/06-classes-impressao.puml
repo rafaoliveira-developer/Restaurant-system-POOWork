@@ -1,0 +1,67 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Classes de impressão e coordenação da fila
+
+allowmixing
+hide empty members
+hide circle
+left to right direction
+
+package "Terminal Cozinha" {
+  class KitchenPrinting {
+    -refresh()
+    -record(client, id)
+    -action(action)
+  }
+  class Client <<atlas.cliente>> {
+    +get(route)
+    +post(route, body)
+  }
+  artifact "Diário de resultados\n.local/print-results" as Journal
+}
+package "Módulo 06 · atlas.impressao" {
+  class Printing {
+    {static} +configured(mode, queue, output): Printing
+    +submit(id: UUID, content: String): Result
+  }
+  class "Printing.Result" as Result <<record>> {
+    status: String
+    error: String
+  }
+  interface Printer {
+    +print(id: UUID, content: String)
+  }
+  class SimulatedPrinter {
+    -directory: Path
+  }
+  class SystemPrinter {
+    -name: String
+  }
+  class "Printer.UncertainPrintException" as Uncertain
+}
+package "Backend" {
+  class Api
+  class PrintJobs {
+    +pending(c, actor)
+    +action(c, actor, id, action, body)
+  }
+  database "PostgreSQL\nprint_jobs" as Jobs
+}
+artifact "Comprovante textual" as File
+component "Fila do sistema operacional\nJava Print Service" as Spool
+
+KitchenPrinting ..> Client : consulta, assume e devolve o resultado
+KitchenPrinting --> Printing : executa localmente
+KitchenPrinting ..> Journal : salva e reenvia resultados
+Client ..> Api : REST /prints
+Api --> PrintJobs
+PrintJobs ..> Jobs : atualiza estado e atribuição
+Printing --> Printer : adaptador escolhido
+Printing ..> Result : mapeia o resultado
+Printing ..> Uncertain : trata incerteza
+Printer <|.. SimulatedPrinter
+Printer <|.. SystemPrinter
+SimulatedPrinter ..> File
+SystemPrinter ..> Spool
+SystemPrinter ..> Uncertain : pode lançar
+@enduml

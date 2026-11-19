@@ -1,0 +1,187 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Modelo de dados PostgreSQL
+hide circle
+skinparam linetype ortho
+
+package "Identidade e auditoria" {
+  entity "employees" as employees {
+    * id : bigint <<PK>>
+      username : varchar(48) <<UQ>>
+      name : varchar(120)
+      role : varchar(12)
+      schedule : varchar(160)
+      password_hash : text
+      active : boolean
+  }
+  entity "sessions" as sessions {
+    * token_hash : char(64) <<PK>>
+      employee_id : bigint <<FK>>
+      expires_at : timestamptz
+  }
+  entity "audit_events" as audit_events {
+    * id : bigint <<PK>>
+      actor : bigint <<FK>>
+      operation : varchar(60)
+      reference : text
+      details : text
+      created_at : timestamptz
+  }
+}
+
+package "Salão e vendas" {
+  entity "dining_tables" as dining_tables {
+    * id : bigint <<PK>>
+      label : varchar(60) <<UQ>>
+      area : varchar(60)
+      available : boolean
+  }
+  entity "tabs" as tabs {
+    * id : bigint <<PK>>
+      table_id : bigint <<FK>>
+      employee_id : bigint <<FK>>
+      status : varchar(16)
+      opened_at : timestamptz
+      requested_at : timestamptz
+      closed_at : timestamptz
+  }
+  entity "payments" as payments {
+    * id : bigint <<PK>>
+      tab_id : bigint <<FK, UQ>>
+      employee_id : bigint <<FK>>
+      method : varchar(12)
+      amount : numeric(14,2)
+      created_at : timestamptz
+      cash_closing_id : bigint <<FK>>
+  }
+  entity "cash_closings" as cash_closings {
+    * id : bigint <<PK>>
+      employee_id : bigint <<FK>>
+      amount : numeric(14,2)
+      payment_count : bigint
+      created_at : timestamptz
+  }
+}
+
+package "Cardápio e produção" {
+  entity "categories" as categories {
+    * name : varchar(60) <<PK>>
+  }
+  entity "stations" as stations {
+    * code : varchar(12) <<PK>>
+  }
+  entity "products" as products {
+    * id : bigint <<PK>>
+      name : varchar(120)
+      description : varchar(600)
+      price : numeric(12,2)
+      category : varchar(60) <<FK>>
+      station : varchar(12) <<FK>>
+      image : varchar(1000)
+      available : boolean
+  }
+  entity "orders" as orders {
+    * id : uuid <<PK>>
+      sequence : bigint <<UQ>>
+      idempotency_key : uuid
+      request_hash : char(64)
+      employee_id : bigint <<FK>>
+      tab_id : bigint <<FK>>
+      created_at : timestamptz
+      status : varchar(16)
+      code : char(2)
+      delivered_at : timestamptz
+  }
+  entity "order_items" as order_items {
+    * id : bigint <<PK>>
+      order_id : uuid <<FK>>
+      product_id : bigint <<FK>>
+      name : varchar(120)
+      category : varchar(60)
+      station : varchar(12) <<FK>>
+      unit_price : numeric(12,2)
+      quantity : integer
+      notes : varchar(300)
+  }
+  entity "dispatches" as dispatches {
+    * order_id : uuid <<PK, FK>>
+    * station : varchar(12) <<PK, FK>>
+      status : varchar(12)
+      result_by : bigint <<FK>>
+      result_at : timestamptz
+      error : varchar(300)
+  }
+  entity "order_rejections" as order_rejections {
+    * employee_id : bigint <<PK, FK>>
+    * order_id : uuid <<PK>>
+      error : varchar(300)
+      created_at : timestamptz
+  }
+}
+
+package "Impressão e infraestrutura" {
+  entity "print_jobs" as print_jobs {
+    * id : uuid <<PK>>
+      order_id : uuid <<FK>>
+      parent_id : uuid <<FK>>
+      content : text
+      status : varchar(12)
+      attempts : integer
+      claim_id : uuid
+      claimed_by : bigint <<FK>>
+      claimed_at : timestamptz
+      created_at : timestamptz
+      updated_at : timestamptz
+      error : varchar(300)
+  }
+  entity "outbox" as outbox {
+    * id : bigint <<PK>>
+      topic : text
+      payload : text
+      published_at : timestamptz
+  }
+  entity "operational_settings" as operational_settings {
+    * key : varchar(48) <<PK>>
+      value : varchar(300)
+  }
+  entity "schema_versions" as schema_versions {
+    * version : text <<PK>>
+      applied_at : timestamptz
+  }
+}
+
+employees ||--o{ sessions : employee_id
+employees |o--o{ audit_events : actor
+dining_tables ||--o{ tabs : table_id
+employees ||--o{ tabs : employee_id
+tabs ||--o{ orders : tab_id
+employees ||--o{ orders : employee_id
+categories ||--o{ products : category
+stations ||--o{ products : station
+products ||--o{ order_items : product_id
+orders ||--o{ order_items : order_id
+stations ||--o{ order_items : station
+orders ||--o{ dispatches : order_id
+stations ||--o{ dispatches : station
+employees |o--o{ dispatches : result_by
+employees ||--o{ order_rejections : employee_id
+orders ||--o{ print_jobs : order_id
+print_jobs |o--o{ print_jobs : parent_id
+employees |o--o{ print_jobs : claimed_by
+tabs ||--o| payments : tab_id
+employees ||--o{ payments : employee_id
+employees ||--o{ cash_closings : employee_id
+cash_closings |o--o{ payments : cash_closing_id
+
+note bottom of tabs
+  Índice parcial limita a uma comanda ativa por mesa.
+end note
+note bottom of orders
+  O par employee_id e idempotency_key é único.
+  O comando rejeitado tem armazenamento independente.
+end note
+note bottom of print_jobs
+  Um trabalho original por pedido quando parent_id é nulo.
+  Cópias apontam para o trabalho que foi reimpresso.
+end note
+@enduml

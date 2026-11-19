@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.POOProject" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#174AFF</item>
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.POOProject" parent="Base.Theme.POOProject" />
+    <style name="Theme.POOProject.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#173DDB</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/atlas_mark</item>
+        <item name="windowSplashScreenAnimationDuration">200</item>
+        <item name="postSplashScreenTheme">@style/Theme.POOProject</item>
+    </style>
+</resources>

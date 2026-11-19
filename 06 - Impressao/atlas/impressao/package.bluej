@@ -1,0 +1,24 @@
+#BlueJ package file
+package.numDependencies=0
+package.numTargets=3
+package.showExtends=true
+package.showUses=true
+project.charset=UTF-8
+target1.name=adaptadores
+target1.type=PackageTarget
+target1.width=160
+target1.height=58
+target1.x=85
+target1.y=70
+target2.name=interfaces
+target2.type=PackageTarget
+target2.width=160
+target2.height=58
+target2.x=265
+target2.y=70
+target3.name=servicos
+target3.type=PackageTarget
+target3.width=160
+target3.height=58
+target3.x=445
+target3.y=70

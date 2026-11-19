@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="15">
+  <padding><Insets top="25" left="28" right="28" bottom="24"/></padding>
+  <HBox alignment="CENTER_LEFT" spacing="12">
+    <Label text="Menu" styleClass="page-title"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="primary" text="Novo produto" styleClass="primary"/>
+  </HBox>
+  <Label text="Produtos, categorias e disponibilidade" styleClass="muted" wrapText="true"/>
+  <FlowPane hgap="9" vgap="8">
+    <ComboBox fx:id="filter" prefWidth="158"/><TextField fx:id="search" promptText="Buscar produto" prefWidth="208"/><Button fx:id="reload" text="Atualizar"/>
+  </FlowPane>
+  <TableView fx:id="table" VBox.vgrow="ALWAYS" minHeight="250"/>
+  <HBox alignment="CENTER_LEFT" spacing="10"><Label fx:id="status" wrapText="true" styleClass="muted"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="details" text="Editar selecionado"/></HBox>
+</VBox>

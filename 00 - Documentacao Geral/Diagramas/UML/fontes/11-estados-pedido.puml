@@ -1,0 +1,43 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Estados do pedido e do despacho por estação
+
+left to right direction
+
+state "Pedido persistido · orders" as Pedido {
+  state "PENDENTE" as PedidoPendente
+  state "CONFIRMADO" as PedidoOk
+  state "PARCIAL" as PedidoParcial
+  state "ERRO" as PedidoErro
+
+  [*] --> PedidoPendente : aceitação
+  PedidoPendente --> PedidoOk : todas as estações em OK
+  PedidoPendente --> PedidoParcial : estações em OK e ERRO
+  PedidoPendente --> PedidoErro : todas as estações em ERRO
+}
+
+state "Despacho de uma estação · dispatches" as Despacho {
+  state "PENDENTE" as DespachoPendente
+  state "PREPARANDO" as DespachoPreparando
+  state "OK" as DespachoOk
+  state "ERRO" as DespachoErro
+
+  [*] --> DespachoPendente : pedido aceito
+  DespachoPendente --> DespachoPreparando : Iniciar preparo
+  DespachoPendente --> DespachoOk : Marcar pronto
+  DespachoPendente --> DespachoErro : Informar falha
+  DespachoPreparando --> DespachoOk : Marcar pronto
+  DespachoPreparando --> DespachoErro : Informar falha
+}
+
+note bottom of Pedido
+  A entrega preenche delivered_at em CONFIRMADO ou PARCIAL.
+  REJEITADO é registrado separadamente em order_rejections.
+  O código tem os dígitos na ordem Cozinha–Bar.
+end note
+
+note bottom of Despacho
+  OK e ERRO são finais para a estação.
+  Reentregas de mensagens preservam o estado final.
+end note
+@enduml

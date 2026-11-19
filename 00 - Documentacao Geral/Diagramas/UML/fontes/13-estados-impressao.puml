@@ -1,0 +1,33 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Estados do trabalho de impressão
+
+left to right direction
+
+state "PENDENTE" as Pendente
+state "IMPRIMINDO" as Imprimindo
+state "IMPRESSO" as Impresso
+state "FALHA" as Falha
+state "INCERTO" as Incerto
+state "CANCELADO" as Cancelado
+
+[*] --> Pendente : trabalho criado
+Pendente --> Imprimindo : claim · operador e claimId
+Imprimindo --> Impresso : adaptador concluiu
+Imprimindo --> Falha : falha registrada
+Imprimindo --> Incerto : resultado incerto
+Imprimindo --> Incerto : verificação manual após 2 min
+Falha --> Pendente : retry
+Pendente --> Cancelado : cancel
+Falha --> Cancelado : cancel
+
+note bottom of Impresso
+  IMPRESSO ou INCERTO permitem reimpressão.
+  A operação cria outro trabalho PENDENTE
+  com UUID próprio e parent_id.
+end note
+note bottom of Imprimindo
+  O mesmo operador e claimId confirmam o resultado.
+  A produção da cozinha tem estado independente.
+end note
+@enduml

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/central.css">
+  <columnConstraints><ColumnConstraints percentWidth="41.4"/><ColumnConstraints percentWidth="58.6"/></columnConstraints>
+  <rowConstraints><RowConstraints percentHeight="100"/></rowConstraints>
+  <VBox fx:id="brandPanel" spacing="20" styleClass="brand-rail" alignment="CENTER_LEFT">
+    <padding><Insets top="26" left="32" right="32" bottom="28"/></padding>
+    <Label fx:id="app" text="ATLAS Central" styleClass="brand-kicker"/>
+    <StackPane fx:id="brandFrame" maxWidth="450" minHeight="250" prefHeight="450" maxHeight="450">
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints percentWidth="22.4"/><ColumnConstraints percentWidth="18.66"/><ColumnConstraints percentWidth="18.34"/><ColumnConstraints percentWidth="18.42"/><ColumnConstraints percentWidth="22.18"/>
+        </columnConstraints>
+        <rowConstraints><RowConstraints percentHeight="100"/></rowConstraints>
+        <Region styleClass="stripe-a"/><Region GridPane.columnIndex="1" styleClass="stripe-b"/><Region GridPane.columnIndex="2" styleClass="stripe-c"/><Region GridPane.columnIndex="3" styleClass="stripe-d"/><Region GridPane.columnIndex="4" styleClass="stripe-e"/>
+      </GridPane>
+      <ImageView fx:id="brandMark" fitWidth="450" preserveRatio="true">
+        <image><Image url="@../icons/imgSimboloComponentesVetoriaisEditaveis.png"/></image>
+      </ImageView>
+    </StackPane>
+    <Label text="Atlas Desktop" styleClass="brand-title"/>
+    <Label text="Gestão integrada de operações para restaurantes." wrapText="true" styleClass="brand-kicker"/>
+  </VBox>
+  <StackPane GridPane.columnIndex="1" styleClass="access-background">
+    <ScrollPane fitToWidth="true" fitToHeight="true">
+      <content><StackPane>
+        <padding><Insets top="26" right="22" bottom="26" left="22"/></padding>
+        <VBox spacing="12" maxWidth="450" maxHeight="-Infinity" styleClass="card">
+          <padding><Insets top="26" left="26" right="26" bottom="26"/></padding>
+          <StackPane maxWidth="44" minWidth="44" minHeight="44" styleClass="card-icon, blue">
+            <ImageView fitWidth="22" preserveRatio="true"><image><Image url="@../icons/imgPhosphorRegularLockSimpleAzulAtlas.png"/></image></ImageView>
+          </StackPane>
+          <Label text="Acesse o Atlas Central" styleClass="section-title"/>
+          <Label text="Use seu acesso individual para entrar na operação." styleClass="muted" wrapText="true"/>
+          <Label text="Código do funcionário"/><TextField fx:id="username" promptText="Seu código"/>
+          <Label text="Senha"/>
+          <HBox spacing="6">
+            <StackPane HBox.hgrow="ALWAYS"><PasswordField fx:id="password" promptText="Digite sua senha"/><TextField fx:id="passwordVisible" visible="false" managed="false"/></StackPane>
+            <Button fx:id="showPassword" accessibleText="Exibir ou ocultar senha" styleClass="icon-button"><graphic><ImageView fitWidth="16" preserveRatio="true"><image><Image url="@../icons/imgPhosphorRegularEyeCinzaAtlas.png"/></image></ImageView></graphic></Button>
+          </HBox>
+          <TitledPane text="Conexão" expanded="true" animated="false">
+            <content><VBox spacing="8">
+              <Label text="Endereço do Backend"/><TextField fx:id="server" promptText="https://servidor"/>
+              <Label text="Broker MQTT"/><TextField fx:id="broker" promptText="ssl://servidor:8883"/>
+              <Label text="Credencial MQTT individual"/><PasswordField fx:id="mqtt" promptText="Senha do broker"/>
+            </VBox></content>
+          </TitledPane>
+          <Button fx:id="submit" text="Entrar" defaultButton="true" styleClass="primary"/>
+          <Label fx:id="message" wrapText="true" styleClass="muted"/>
+        </VBox>
+      </StackPane></content>
+    </ScrollPane>
+  </StackPane>
+</GridPane>

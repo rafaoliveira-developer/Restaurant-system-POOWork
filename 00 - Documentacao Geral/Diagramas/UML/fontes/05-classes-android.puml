@@ -1,0 +1,94 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Classes do aplicativo Android do garçom
+
+allowmixing
+hide empty members
+hide circle
+
+class AppCompatActivity <<AndroidX>>
+class Fragment <<AndroidX>>
+class ViewModel <<AndroidX>>
+artifact "nav_graph.xml" as Navigation
+
+package "com.example.pooproject" {
+  class MainActivity {
+    +onCreate(savedInstanceState)
+  }
+  class LoginFragment
+  abstract class AtlasFragment {
+    +onStart()
+    +onStop()
+    {abstract} #refresh()
+  }
+  class MesaFragment
+  class CardapioFragment {
+    -review()
+    -send(payload)
+  }
+  class ComandaFragment {
+    -action(action)
+  }
+  class HistoricoFragment
+  class "CardapioFragment.DraftModel" as DraftModel
+  class ComandaTemporaria {
+    ~adjust(product, difference)
+    ~update(catalog)
+    ~total(): BigDecimal
+    ~payload(): JSONArray
+  }
+  class "ComandaTemporaria.Item" as Item {
+    product: ProdutoMenu
+    quantity: int
+    notes: String
+  }
+  class ProdutoMenu {
+    id: long
+    nome: String
+    preco: BigDecimal
+    categoria: String
+  }
+  class Cardapio {
+    {static} ~from(rows)
+  }
+  class EstadoMesas
+  class SessaoUsuario {
+    {static} ~login(context, url, broker, username, password, mqttSecret)
+    ~get(route)
+    ~post(route, body)
+    ~pending(table): JSONObject
+    ~send(table, items)
+  }
+  interface "SessaoUsuario.Response<T>" as Response {
+    +accept(value)
+  }
+  class "SessaoUsuario.ApiError" as ApiError {
+    status: int
+  }
+}
+
+AppCompatActivity <|-- MainActivity
+Fragment <|-- LoginFragment
+Fragment <|-- AtlasFragment
+AtlasFragment <|-- MesaFragment
+AtlasFragment <|-- CardapioFragment
+AtlasFragment <|-- ComandaFragment
+AtlasFragment <|-- HistoricoFragment
+ViewModel <|-- DraftModel
+MainActivity ..> Navigation : hospeda navegação
+LoginFragment ..> SessaoUsuario : autentica
+AtlasFragment ..> SessaoUsuario : atualiza a tela
+MesaFragment ..> EstadoMesas
+EstadoMesas ..> SessaoUsuario : consulta mesas
+CardapioFragment --> DraftModel
+CardapioFragment ..> Cardapio : interpreta catálogo
+CardapioFragment ..> SessaoUsuario : publica pedido
+ComandaFragment ..> SessaoUsuario : opera comanda
+HistoricoFragment ..> SessaoUsuario : consulta e entrega
+DraftModel *-- ComandaTemporaria
+ComandaTemporaria *-- "0..*" Item
+Item --> ProdutoMenu
+Cardapio ..> ProdutoMenu : instancia a partir do JSON
+SessaoUsuario ..> Response : entrega resultado assíncrono
+SessaoUsuario ..> ApiError : resposta HTTP não OK
+@enduml

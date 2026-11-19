@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="15">
+  <padding><Insets top="25" left="28" right="28" bottom="24"/></padding>
+  <HBox alignment="CENTER_LEFT" spacing="12">
+    <Label text="Contas solicitadas" styleClass="page-title"/><Region HBox.hgrow="ALWAYS"/><ToggleButton fx:id="alternate" text="Pagamentos"/><Button fx:id="primary" text="Fechar caixa" styleClass="primary"/>
+  </HBox>
+  <Label text="Revise o consumo e conclua o fechamento das comandas do salão" styleClass="muted" wrapText="true"/>
+  <FlowPane hgap="9" vgap="8">
+    <TextField fx:id="search" promptText="Buscar mesa" prefWidth="208"/><Button fx:id="reload" text="Atualizar"/>
+  </FlowPane>
+  <HBox spacing="18" VBox.vgrow="ALWAYS"><VBox spacing="10" styleClass="workspace-panel" HBox.hgrow="ALWAYS"><Label text="Fila de fechamento" styleClass="section-title"/><StackPane VBox.vgrow="ALWAYS"><TableView fx:id="table" minHeight="250"/><ScrollPane fx:id="accountScroll" fitToWidth="true"><content><VBox fx:id="accounts" spacing="12"/></content></ScrollPane></StackPane></VBox><VBox spacing="10" styleClass="workspace-panel" prefWidth="242" maxHeight="-Infinity"><Label text="Resumo do caixa" styleClass="person"/><Separator/><Label text="Total em aberto" styleClass="muted"/><Label fx:id="balance" styleClass="metric"/><Label fx:id="counts" wrapText="true" styleClass="muted"/><Button fx:id="closings" text="Histórico de caixa"/></VBox></HBox>
+  <HBox alignment="CENTER_LEFT" spacing="10"><Label fx:id="status" wrapText="true" styleClass="muted"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="details" text="Abrir comanda"/></HBox>
+</VBox>

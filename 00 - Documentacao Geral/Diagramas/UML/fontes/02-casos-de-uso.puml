@@ -1,0 +1,51 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Casos de uso e perfis
+
+left to right direction
+actor "Garçom" as Garcom
+actor "Operador do Bar" as Bar
+actor "Operador da Cozinha" as Cozinha
+actor "Gerência" as Gerencia
+actor "Caixa" as Caixa
+
+rectangle "ATLAS v.1.0" {
+  usecase "Autenticar e encerrar sessão" as Login
+  usecase "Consultar salão e cardápio" as Consulta
+  usecase "Abrir comanda" as Abrir
+  usecase "Enviar pedido" as Pedir
+  usecase "Acompanhar pedido\ne registrar entrega" as Entrega
+  usecase "Solicitar a conta" as Solicitar
+  usecase "Operar fila do Bar" as FilaBar
+  usecase "Operar fila da Cozinha" as FilaCozinha
+  usecase "Acompanhar impressão,\nretentar ou reimprimir" as Impressao
+  usecase "Gerenciar mesas, produtos,\nfuncionários e configurações" as Cadastros
+  usecase "Acompanhar pedidos,\nfilas e auditoria" as Painel
+  usecase "Registrar pagamento" as Pagamento
+  usecase "Fechar caixa e consultar vendas" as Fechamento
+}
+
+Garcom -- Login
+Gerencia -- Login
+Caixa -- Login
+Bar -- Login
+Cozinha -- Login
+Garcom -- Consulta
+Garcom -- Abrir
+Garcom -- Pedir
+Garcom -- Entrega
+Garcom -- Solicitar
+Bar -- FilaBar
+Cozinha -- FilaCozinha
+Cozinha -- Impressao
+Gerencia -- Cadastros
+Gerencia -- Painel
+Gerencia -- Abrir
+Gerencia -- Entrega
+Gerencia -- Solicitar
+Gerencia -- Pagamento
+Gerencia -- Fechamento
+Caixa -- Solicitar
+Caixa -- Pagamento
+Caixa -- Fechamento
+@enduml

@@ -1,0 +1,49 @@
+@startuml
+!include estilo.iuml
+title ATLAS v.1.0 · Implantação no Windows e no Android
+
+left to right direction
+
+node "Computador Windows" as Windows {
+  node "Processos Java 21" as Java {
+    artifact "ATLAS Backend" as Backend
+    artifact "Desktop JavaFX" as Desktop
+    artifact "Terminal Bar JavaFX" as Bar
+    artifact "Terminal Cozinha JavaFX" as Kitchen
+  }
+  node "Serviços portáteis" as Services {
+    database "PostgreSQL\n127.0.0.1:55433" as DB
+    queue "Mosquitto\n127.0.0.1:1883" as MQTT
+  }
+  node "Android Emulator\nAVD no mesmo computador" as Emulator {
+    artifact "APK ATLAS Garçom · debug" as MobileDebug
+  }
+  artifact "Comprovantes simulados\n.local/comprovantes" as Receipts
+  component "Fila de impressão do Windows" as Spool
+}
+node "Dispositivo Android físico\ninstalação em rede" as Physical {
+  artifact "APK ATLAS Garçom" as Mobile
+}
+node "Impressora configurada" as Printer <<device>>
+
+Desktop --> Backend : HTTP 8080
+Bar --> Backend : HTTP 8080
+Kitchen --> Backend : HTTP 8080
+Desktop --> MQTT : MQTT 1883
+Bar <--> MQTT : MQTT 1883
+Kitchen <--> MQTT : MQTT 1883
+Backend <--> MQTT : MQTT 1883
+Backend --> DB : JDBC 55433
+MobileDebug --> Backend : http://10.0.2.2:8080
+MobileDebug <--> MQTT : tcp://10.0.2.2:1883
+Mobile ..> Backend : HTTPS, conforme configuração de rede
+Mobile ..> MQTT : MQTT sobre TLS, conforme configuração de rede
+Kitchen ..> Receipts : simulado
+Kitchen --> Spool : sistema
+Spool --> Printer : driver instalado
+
+note bottom of Services
+  O modo portátil escuta em loopback.
+  No Compose, a configuração padrão expõe PostgreSQL na porta 5432.
+end note
+@enduml

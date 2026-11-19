@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fitToWidth="true">
+  <content><VBox spacing="15">
+    <padding><Insets top="25" left="28" right="28" bottom="30"/></padding>
+    <Label fx:id="greeting" styleClass="page-title"/><Label fx:id="date" styleClass="muted"/>
+    <Region prefHeight="14"/><Label text="Panorama do restaurante" styleClass="section-title"/>
+    <GridPane hgap="16" vgap="16">
+      <columnConstraints><ColumnConstraints percentWidth="33.333"/><ColumnConstraints percentWidth="33.333"/><ColumnConstraints percentWidth="33.333"/></columnConstraints>
+      <VBox fx:id="salon" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+      <VBox fx:id="orders" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+      <VBox fx:id="service" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+      <VBox fx:id="cash" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+      <VBox fx:id="production" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+      <VBox fx:id="printing" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+    </GridPane>
+    <Label fx:id="status" styleClass="muted" wrapText="true"/>
+  </VBox></content>
+</ScrollPane>
